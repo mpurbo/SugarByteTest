@@ -30,11 +30,13 @@ public class MainActivity extends Activity {
 
         imageView = (ImageView)findViewById(R.id.imageView);
 
-        //new DownloadBitmapTask().execute("http://mamad.purbo.org/ultrag.jpg");
+        new DownloadBitmapTask().execute("http://mamad.purbo.org/ultrag.jpg");
 
+        /*
         ImageData savedImageData = Select.from(ImageData.class).where(Condition.prop("key").eq("test")).first();
         byte [] rawImageData = savedImageData.getRawImageData();
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(rawImageData, 0, rawImageData.length));
+        */
     }
 
 
