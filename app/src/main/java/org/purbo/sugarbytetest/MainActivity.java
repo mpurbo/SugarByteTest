@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -21,6 +22,8 @@ import java.nio.ByteBuffer;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = "sugarbytetest.MainActivity";
+
     ImageView imageView;
 
     @Override
@@ -30,13 +33,15 @@ public class MainActivity extends Activity {
 
         imageView = (ImageView)findViewById(R.id.imageView);
 
-        new DownloadBitmapTask().execute("http://mamad.purbo.org/ultrag.jpg");
-
-        /*
         ImageData savedImageData = Select.from(ImageData.class).where(Condition.prop("key").eq("test")).first();
-        byte [] rawImageData = savedImageData.getRawImageData();
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(rawImageData, 0, rawImageData.length));
-        */
+        if (savedImageData == null) {
+            Log.d(TAG, "Image not available, download first");
+            new DownloadBitmapTask().execute("http://mamad.purbo.org/ultrag.jpg");
+        } else {
+            Log.d(TAG, "Image already saved, display it");
+            byte [] rawImageData = savedImageData.getRawImageData();
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(rawImageData, 0, rawImageData.length));
+        }
     }
 
 
@@ -82,7 +87,7 @@ public class MainActivity extends Activity {
                     try { is.close(); } catch (Throwable any) {}
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error downloading/saving", e);
                 return null;
             }
         }
